@@ -3,6 +3,8 @@ import Stats from "./Stats";
 import Logo from "./Logo";
 import Form from "./Form";
 import PackingList from "./PackingList";
+import DateCounter from "./DateCounter";
+import DateCounter2 from "./DateCounter2";
 
 const initialItems = [
   {
@@ -57,5 +59,9 @@ function App() {
     </div>
   );
 }
+
+// function App() {
+//   return <DateCounter2 />;
+// }
 
 export default App;
