@@ -1,24 +1,33 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
+
+const initialState = {
+  step: 1,
+  count: 1,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "increase/count":
+      return {
+        ...state,
+        count: state.count + state.step,
+      };
+    case "decrease/count":
+      return { ...state, count: state.count - state.step };
+    case "increase/step":
+      return { ...state, step: action.payload };
+    case "reset":
+      return { ...state, step: 1, count: 1 };
+    default:
+      throw new Error("Unknown action type");
+  }
+}
 
 export default function DateCounter2() {
-  const [step, setStep] = useState(1);
-  const [count, setCount] = useState(1);
+  const [{ step, count }, dispatch] = useReducer(reducer, initialState);
 
-  const date = new Date();
-  date.setDate(date.getDate() + count);
-
-  function incrementCount() {
-    setCount((count) => count + step);
-  }
-
-  function decrementCount() {
-    setCount((count) => count - step);
-  }
-
-  function handleReset() {
-    setCount(0);
-    setStep(1);
-  }
+  const newDate = new Date();
+  newDate.setDate(newDate.getDate() + count);
 
   return (
     <div className="date-counter-2">
@@ -27,33 +36,31 @@ export default function DateCounter2() {
         min="0"
         max="10"
         value={step}
-        onChange={(e) => setStep(Number(e.target.value))}
+        onChange={(e) =>
+          dispatch({ type: "increase/step", payload: Number(e.target.value) })
+        }
       />
       {step}
 
       <br />
 
-      <button onClick={decrementCount}>-</button>
-      <input
-        type="text"
-        value={count}
-        onChange={(e) => setCount(Number(e.target.value))}
-      />
-      <button onClick={incrementCount}>+</button>
+      <button onClick={() => dispatch({ type: "decrease/count" })}>-</button>
+      <input type="text" value={count} readOnly />
+      <button onClick={() => dispatch({ type: "increase/count" })}>+</button>
 
-      {count === 0 && <p>Today is {date.toDateString()}</p>}
+      {count === 0 && <p>Today is {newDate.toDateString()}</p>}
       {count > 0 && (
         <p>
-          {count} days from today is {date.toDateString()}
+          {count} days from today is {newDate.toDateString()}
         </p>
       )}
       {count < 0 && (
         <p>
-          {Math.abs(count)} days ago was {date.toDateString()}
+          {Math.abs(count)} days ago was {newDate.toDateString()}
         </p>
       )}
 
-      <button onClick={handleReset}>Reset</button>
+      <button onClick={() => dispatch({ type: "reset" })}>Reset</button>
     </div>
   );
 }

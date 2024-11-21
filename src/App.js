@@ -5,6 +5,7 @@ import Form from "./Form";
 import PackingList from "./PackingList";
 import DateCounter from "./DateCounter";
 import DateCounter2 from "./DateCounter2";
+import BankAccount from "./BankAccount";
 
 const initialItems = [
   {
@@ -61,7 +62,7 @@ function App() {
 }
 
 // function App() {
-//   return <DateCounter2 />;
+//   return <BankAccount />;
 // }
 
 export default App;
